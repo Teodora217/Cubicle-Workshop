@@ -11,10 +11,10 @@ const cubes = [
 
         {
           id: 'yasc7km7bq35br',
-          name: 'dfx',
+          name: 'dpx',
           description: 'xfdvcx',
           imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Rubik%27s_cube.svg/1200px-Rubik%27s_cube.svg.png',
-          difficultyLevel: 3
+          difficultyLevel: 1
         },
       
         {
@@ -22,7 +22,7 @@ const cubes = [
           name: 'dfx',
           description: 'xfdvcx',
           imageUrl: 'https://logicbg.com/wp-content/uploads/2019/04/rubik-kub-Mirror-Cube-silver-ogledalen-kub-podreden-430x430.jpg',
-          difficultyLevel: 3
+          difficultyLevel: 2
         },
         
         {
@@ -35,11 +35,8 @@ const cubes = [
 ];
 
 exports.create = (cubeData) => {
-    const id = uniqid();
-    console.log({id})
-
     const newCube = {
-      id,
+      id: uniqid(),
       ...cubeData,
     };
 
@@ -48,7 +45,22 @@ exports.create = (cubeData) => {
 }
 
 
-exports.getAll = () => {
-    return [...cubes];
+exports.getAll = (search, from, to) => {
+    let filterCubes = [...cubes]
+
+    if(search){
+        filterCubes = filterCubes.filter((cube) => cube.name.toLowerCase().includes(search.toLowerCase()));
+    }
+    if(from){
+        filterCubes = filterCubes.filter((cube) => cube.difficultyLevel >= Number(from));
+    }
+    if(to){
+        filterCubes = filterCubes.filter((cube) => cube.difficultyLevel <= Number(to));
+    }
+    return filterCubes;
 };
 
+
+exports.getSingleCube = (id) => {
+    return cubes.find((cube) => cube.id === id);
+}
